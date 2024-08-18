@@ -1,0 +1,15 @@
+/dataset.pkl
+/splitted.pkl
+/X_train.pkl
+/X_test.pkl
+/y_train.pkl
+/y_test.pkl
+/X_train_n.pkl
+/X_test_n.pkl
+/model.pkl
+
+/grid_search_model.joblib
+/randomized_search_model.joblib
+/halvingrandom_search_model.joblib
+/halvinggrid_search_model.joblib
+/pipe.joblib

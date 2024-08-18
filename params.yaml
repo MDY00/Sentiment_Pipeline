@@ -1,0 +1,4 @@
+model:
+  strategy: uniform
+split_size: 0.45
+select_features: 0

@@ -1,0 +1,53 @@
+stages:
+  download_data:
+    cmd: PYTHONPATH= python3 scripts/download_data.py
+    deps:
+    - scripts/download_data.py
+    outs:
+    - data/dataset.pkl
+  data_analysis:
+    cmd: PYTHONPATH= python3 scripts/data_analysis.py
+  split_data:
+    cmd: PYTHONPATH= python3 scripts/split_data.py
+    deps:
+    - data/dataset.pkl
+    - scripts/split_data.py
+    params:
+    - split_size
+    outs:
+    - data/X_train.pkl
+    - data/X_test.pkl
+    - data/y_train.pkl
+    - data/y_test.pkl
+  features_extraction:
+    cmd: PYTHONPATH= python3 scripts/features_extraction.py
+    deps:
+    - data/X_train.pkl
+    - data/X_test.pkl
+    - data/y_train.pkl
+    - data/y_test.pkl
+    - scripts/features_extraction.py
+    outs:
+    - data/grid_search_model.joblib
+    - data/randomized_search_model.joblib
+    - data/halvingrandom_search_model.joblib
+    - data/halvinggrid_search_model.joblib
+    - data/pipe.joblib
+  model_lev:
+    cmd: PYTHONPATH= python3 scripts/model_lev.py
+    params:
+    - model.strategy
+    deps:
+    - data/X_train.pkl
+    - data/X_test.pkl
+    - data/y_train.pkl
+    - data/y_test.pkl
+    - data/grid_search_model.joblib
+    - data/randomized_search_model.joblib
+    - data/halvingrandom_search_model.joblib
+    - data/halvinggrid_search_model.joblib
+    - data/pipe.joblib
+    - scripts/model_lev.py
+    metrics:
+      - data/score.json:
+          cache: false

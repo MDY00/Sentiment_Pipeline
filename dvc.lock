@@ -1,0 +1,117 @@
+schema: '2.0'
+stages:
+  download_data:
+    cmd: PYTHONPATH= python3 scripts/download_data.py
+    deps:
+    - path: scripts/download_data.py
+      md5: 8d38e04187e256e1207d9992f6e0500f
+      size: 366
+      isexec: true
+    outs:
+    - path: data/dataset.pkl
+      md5: 11e03e84c1bb581db96507833a8cf5db
+      size: 597317
+  split_data:
+    cmd: PYTHONPATH= python3 scripts/split_data.py
+    deps:
+    - path: data/dataset.pkl
+      md5: 11e03e84c1bb581db96507833a8cf5db
+      size: 597317
+    - path: scripts/split_data.py
+      md5: c5a799f1801291b70dd699d67131e2fc
+      size: 2639
+      isexec: true
+    params:
+      params.yaml:
+        split_size: 0.45
+    outs:
+    - path: data/X_test.pkl
+      md5: 5ece8315f0849a4cfca7cedcc2abef99
+      size: 47148
+    - path: data/X_train.pkl
+      md5: 954bb7dad7d49d46bbd23ec073a82081
+      size: 61094
+    - path: data/y_test.pkl
+      md5: 9c2cb5a57d8d76c4a763ef866148e900
+      size: 11488
+    - path: data/y_train.pkl
+      md5: 1947d11edad4d74dfffae008c7b1d5f8
+      size: 13888
+  features_extraction:
+    cmd: PYTHONPATH= python3 scripts/features_extraction.py
+    deps:
+    - path: data/X_test.pkl
+      md5: 5ece8315f0849a4cfca7cedcc2abef99
+      size: 47148
+    - path: data/X_train.pkl
+      md5: 954bb7dad7d49d46bbd23ec073a82081
+      size: 61094
+    - path: data/y_test.pkl
+      md5: 9c2cb5a57d8d76c4a763ef866148e900
+      size: 11488
+    - path: data/y_train.pkl
+      md5: 1947d11edad4d74dfffae008c7b1d5f8
+      size: 13888
+    - path: scripts/features_extraction.py
+      md5: 8320f2680fc3b7e2b496914d95823417
+      size: 6348
+      isexec: true
+    outs:
+    - path: data/grid_search_model.joblib
+      md5: e443abb08da3139985bfc63bcd2da1fc
+      size: 1712224
+    - path: data/halvinggrid_search_model.joblib
+      md5: 81964f69d4d07e9e0ce96e533371fa58
+      size: 1825920
+    - path: data/halvingrandom_search_model.joblib
+      md5: edafd047937b880106bc05429993a5e3
+      size: 1767856
+    - path: data/pipe.joblib
+      md5: 1b70acf236736a3561c8cbefefc0a463
+      size: 1772
+    - path: data/randomized_search_model.joblib
+      md5: 3ebe1d2092f1520a1d85f59d2ffdc7bf
+      size: 1727904
+  data_analysis:
+    cmd: PYTHONPATH= python3 scripts/data_analysis.py
+  model_lev:
+    cmd: PYTHONPATH= python3 scripts/model_lev.py
+    deps:
+    - path: data/X_test.pkl
+      md5: 5ece8315f0849a4cfca7cedcc2abef99
+      size: 47148
+    - path: data/X_train.pkl
+      md5: 954bb7dad7d49d46bbd23ec073a82081
+      size: 61094
+    - path: data/grid_search_model.joblib
+      md5: e443abb08da3139985bfc63bcd2da1fc
+      size: 1712224
+    - path: data/halvinggrid_search_model.joblib
+      md5: 81964f69d4d07e9e0ce96e533371fa58
+      size: 1825920
+    - path: data/halvingrandom_search_model.joblib
+      md5: edafd047937b880106bc05429993a5e3
+      size: 1767856
+    - path: data/pipe.joblib
+      md5: 1b70acf236736a3561c8cbefefc0a463
+      size: 1772
+    - path: data/randomized_search_model.joblib
+      md5: 3ebe1d2092f1520a1d85f59d2ffdc7bf
+      size: 1727904
+    - path: data/y_test.pkl
+      md5: 9c2cb5a57d8d76c4a763ef866148e900
+      size: 11488
+    - path: data/y_train.pkl
+      md5: 1947d11edad4d74dfffae008c7b1d5f8
+      size: 13888
+    - path: scripts/model_lev.py
+      md5: 671f63651d50a168627d4eee59de4177
+      size: 1842
+      isexec: true
+    params:
+      params.yaml:
+        model.strategy: uniform
+    outs:
+    - path: data/score.json
+      md5: c5057e9bb0dde63478ae8fbf9e3082bc
+      size: 10
